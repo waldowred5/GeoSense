@@ -43,6 +43,7 @@ export const useGetFeatures = () => {
 }
 
 export const useGetObservations = (sensorId: string) => {
+  // TODO: Put a guard here if sensorId is empty
   return useFetch(`/FeaturesOfInterest(${sensorId})/Observations`);
 }
 
