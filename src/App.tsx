@@ -1,23 +1,20 @@
-import { useGetFeatures } from "./hooks/useFetch.ts";
-import { FeatureSelect } from "./components/FeatureSelect.tsx";
-import { SensorSelect } from "./components/SensorSelect.tsx";
-import { useFeature } from "./store/useFeature.ts";
+import { useEffect } from 'react'
+import { themeChange } from 'theme-change'
+import { Header } from "./components/Header.tsx";
+import { SelectorBar } from "./components/SelectorBar.tsx";
 
 const App = () => {
-  const {
-    data: features,
-    loading: featuresLoading,
-    error: featuresError
-  } = useGetFeatures();
-
-  const { selectedFeature } = useFeature();
+  useEffect(() => {
+    themeChange(false)
+  }, [])
 
   return (
-    <>
-      <h1>BGS Sensors Plotter</h1>
-      <FeatureSelect features={features} loading={featuresLoading} error={featuresError} />
-      { selectedFeature && <SensorSelect /> }
-    </>
+    <div className="flex items-center flex-col gap-3 w-[100vw] h-[100vh]">
+      <Header />
+      <div className="flex w-[96%] h-[94%] mb-8 card shadow-xl border rounded-box bg-base-300">
+        <SelectorBar />
+      </div>
+    </div>
   );
 }
 

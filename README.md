@@ -1,6 +1,6 @@
 ### Future Improvements:
 - Caching to reduce API calls (Next.js?)
-- Add Google Maps API for location display
+- Add Google Maps API for location display ([3d Maps](https://developers.google.com/maps/documentation/javascript/3d-maps-getting-started?hl=en))
 
 ### Repo Visualisation
 For more info head to: [Repo Visualizer](https://octo.github.com/projects/repo-visualization)
