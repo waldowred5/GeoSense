@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const BASE_URL = 'https://sensors-docs.bgs.ac.uk/';
+const BASE_URL = 'https://sensors.bgs.ac.uk/FROST-Server/v1.1';
 export const FETCH_URL = {
-  FEATURES: `${BASE_URL}/features`,
-  SENSORS: `${BASE_URL}/features/:featureId/sensors`,
+  FEATURES: `${BASE_URL}/FeaturesOfInterest`,
+  SENSORS: `${BASE_URL}/FeaturesOfInterest/:featureId/sensors`,
   OBSERVATIONS: `${BASE_URL}/sensors/:sensorId/observations`,
 };
 
