@@ -30,8 +30,8 @@ export const SensorSelect = () => {
       <option value="">Select a sensor...</option>
       {
         sensors.data && sensors.data.map((sensor: any) => (
-          <option key={sensor["@iot.id"]} value={sensor["@iot.id"]}>
-            {sensor["@iot.id"]}
+          <option key={sensor['@iot.id']} value={sensor['@iot.id']}>
+            {sensor['@iot.id']}
           </option>
         ))
       }
