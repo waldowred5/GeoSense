@@ -1,11 +1,9 @@
-import './App.css'
-
-function App() {
+const App = () => {
   return (
     <>
       BLANK SLATE!
     </>
-  )
+  );
 }
 
 export default App
