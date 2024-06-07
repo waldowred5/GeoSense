@@ -1,23 +1,22 @@
-import { FETCH_URL, useFetch } from "./hooks/useFetch.ts";
+import { useGetFeatures } from "./hooks/useFetch.ts";
+import { FeatureSelect } from "./components/FeatureSelect.tsx";
+import { SensorSelect } from "./components/SensorSelect.tsx";
+import { useFeature } from "./store/useFeature.ts";
 
 const App = () => {
   const {
     data: features,
     loading: featuresLoading,
     error: featuresError
-  } = useFetch(FETCH_URL.FEATURES);
+  } = useGetFeatures();
 
-  if (featuresLoading) {
-    console.log('Loading features...');
-  } else if (featuresError) {
-    console.error('Error loading features:', featuresError);
-  } else if (features) {
-    console.log('Features loaded:', features);
-  }
+  const { selectedFeature } = useFeature();
 
   return (
     <>
       <h1>BGS Sensors Plotter</h1>
+      <FeatureSelect features={features} loading={featuresLoading} error={featuresError} />
+      { selectedFeature && <SensorSelect /> }
     </>
   );
 }
