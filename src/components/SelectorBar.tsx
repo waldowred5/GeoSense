@@ -1,6 +1,6 @@
 import { FeatureSelect } from "./FeatureSelect.tsx";
 import { SensorSelect, sensorSelectLabel } from "./SensorSelect.tsx";
-import { FaAnglesRight, FaCaretRight, FaChevronRight } from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa6";
 import { useFeature } from "../store/useFeature.ts";
 
 export const SelectorBar = ({ features, featuresLoading, featuresError }: any) => {
@@ -11,8 +11,6 @@ export const SelectorBar = ({ features, featuresLoading, featuresError }: any) =
       <FeatureSelect features={features} loading={featuresLoading} error={featuresError}/>
       <div className="text-4xl pt-[32px]">
         <FaChevronRight />
-        {/*<FaCaretRight />*/}
-        {/*<FaAnglesRight/>*/}
       </div>
       {
         selectedFeatureObservationsLink
@@ -23,8 +21,7 @@ export const SelectorBar = ({ features, featuresLoading, featuresError }: any) =
               <select
                 className="selector"
                 value={''}
-                onChange={() => {
-                }}
+                onChange={() => {}}
                 disabled
               ></select>
             </div>

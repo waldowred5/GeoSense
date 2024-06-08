@@ -33,6 +33,21 @@ export const SensorSelect = () => {
     )
   }
 
+  if (!sensors.loading && sensors.data.length === 0) {
+    return (
+      <div className="selector-container">
+        <label className="label p-0">{sensorSelectLabel}</label>
+        <select
+          className="selector"
+          value={''}
+          onChange={() => {}}
+        >
+          <option>No sensors found</option>
+        </select>
+      </div>
+    )
+  }
+
   return (
     <div className="selector-container">
       <label className="label p-0">{sensorSelectLabel}</label>

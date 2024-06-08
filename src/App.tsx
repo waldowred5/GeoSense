@@ -3,6 +3,7 @@ import { themeChange } from 'theme-change'
 import { Header } from "./components/Header.tsx";
 import { SelectorBar } from "./components/SelectorBar.tsx";
 import { useGetFeatures } from "./hooks/useFetch.ts";
+import { StatsBar } from "./components/StatsBar.tsx";
 
 const App = () => {
   useEffect(() => {
@@ -22,6 +23,7 @@ const App = () => {
       <Header />
       <div className="flex w-[96%] h-[94%] mb-8 card shadow-xl border rounded-box bg-base-300">
         <SelectorBar features={features} loading={featuresLoading} error={featuresError} />
+        <StatsBar />
       </div>
     </div>
   );
