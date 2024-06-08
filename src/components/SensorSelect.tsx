@@ -1,7 +1,6 @@
 import { useFeature } from "../store/useFeature.ts";
 import { useGetObservations } from "../hooks/useFetch.ts";
 import { useState } from "react";
-import { Select } from "./Select.tsx";
 
 export const sensorSelectLabel = '...then select a Sensor';
 
@@ -19,22 +18,37 @@ export const SensorSelect = () => {
   if (sensors.loading) {
     // TODO: Add loading spinner with 200ms delay to avoid quick load flickering
     return (
-      <Select value={''} updateValue={() => {}} disabled label={sensorSelectLabel}>
-        <option>Loading sensors...</option>
-      </Select>
+      <div className="selector-container">
+        <label className="label p-0">{sensorSelectLabel}</label>
+        <select
+          className="selector"
+          value={''}
+          onChange={() => {}}
+          disabled
+        >
+          <option>Loading sensors...</option>
+        </select>
+      </div>
     )
   }
 
   return (
-    <Select value={selectedSensor} updateValue={setSelectedSensor} label={sensorSelectLabel}>
-      <option value="">Select a sensor...</option>
-      {
-        sensors.data && sensors.data.map((sensor: any) => (
-          <option key={sensor['@iot.id']} value={sensor['@iot.id']}>
-            {sensor['@iot.id']}
-          </option>
-        ))
-      }
-    </Select>
+    <div className="selector-container">
+      <label className="label p-0">{sensorSelectLabel}</label>
+      <select
+        className="selector"
+        value={selectedSensor}
+        onChange={(e) => setSelectedSensor(e.target.value)}
+      >
+        <option value="">Select a sensor...</option>
+        {
+          sensors.data && sensors.data.map((sensor: any) => (
+            <option key={sensor['@iot.id']} value={sensor['@iot.id']}>
+              {sensor['@iot.id']}
+            </option>
+          ))
+        }
+      </select>
+    </div>
   )
 }

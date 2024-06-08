@@ -1,5 +1,4 @@
 import { useFeature } from "../store/useFeature.ts";
-import { Select } from "./Select.tsx";
 
 type Feature = {
   '@iot.id': number;
@@ -27,15 +26,23 @@ export const FeatureSelect = ({ features, loading, error }: IFeatureSelectProps)
   const { selectedFeature, updateSelectedFeature } = useFeature();
 
   return (
-    <Select value={selectedFeature} updateValue={updateSelectedFeature} label={'First, select a Feature...'}>
-      <option value="">Select a feature...</option>
-      {
-        features && features.map((feature: any) => (
-          <option key={feature["@iot.id"]} value={feature["@iot.id"]}>
-            {feature.name}
-          </option>
-        ))
-      }
-    </Select>
+    <div className="selector-container">
+      <label className="label p-0">First, select a Feature...</label>
+      <select
+        className="selector"
+        value={selectedFeature}
+        onChange={(e) => updateSelectedFeature(e.target.value)}
+        disabled={loading || !!error || false}
+      >
+        <option value="">Select a feature...</option>
+        {
+          features && features.map((feature: any) => (
+            <option key={feature["@iot.id"]} value={feature["@iot.id"]}>
+              {feature.name}
+            </option>
+          ))
+        }
+      </select>
+    </div>
   )
 }

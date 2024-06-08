@@ -1,32 +1,23 @@
 import { useState, useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
 
 const BASE_URL = 'https://sensors.bgs.ac.uk/FROST-Server/v1.1';
 
-interface ValidationError {
-  message: string;
-  errors: Record<string, string[]>
-}
-
-export const useFetch = (url: string, options?: object) => {
+export const useFetch = (url: string, options?: RequestInit) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<null | Error | AxiosError >(null);
+  const [error, setError] = useState<null | Error>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios(`${BASE_URL}${url}`, options);
-        setData(res.data.value); // TODO: Type res
-      } catch (error) {
-        if (axios.isAxiosError<ValidationError, Record<string, unknown>>(error)) {
-          console.log(error.status)
-
-          setError(error);
-        } else {
-          // Future Improvement: Do something more meaningful with errors here
-          console.log(error);
+        const res = await fetch(`${BASE_URL}${url}`, options);
+        if (!res.ok) {
+          throw new Error(res.statusText);
         }
+        const json = await res.json();
+        setData(json.value);
+      } catch (error) {
+        setError(error);
       } finally {
         setLoading(false);
       }

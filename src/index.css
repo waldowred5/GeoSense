@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+    .selector-container {
+        @apply flex flex-col w-full gap-2 items-center;
+    }
+    .selector {
+        @apply flex w-full select select-bordered rounded bg-primary text-primary-content p-2;
+    }
+}
+
 body {
     font-family: 'Kanit', sans-serif;
     -webkit-font-smoothing: antialiased;

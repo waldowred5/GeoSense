@@ -2,7 +2,6 @@ import { FeatureSelect } from "./FeatureSelect.tsx";
 import { SensorSelect, sensorSelectLabel } from "./SensorSelect.tsx";
 import { useGetFeatures } from "../hooks/useFetch.ts";
 import { useFeature } from "../store/useFeature.ts";
-import { Select } from "./Select.tsx";
 
 export const SelectorBar = () => {
   const {
@@ -10,6 +9,8 @@ export const SelectorBar = () => {
     loading: featuresLoading,
     error: featuresError
   } = useGetFeatures();
+
+  console.log(features);
 
   const { selectedFeature } = useFeature();
 
@@ -19,7 +20,17 @@ export const SelectorBar = () => {
       {
         selectedFeature
           ? <SensorSelect />
-          : <Select value={''} updateValue={() => {}} label={sensorSelectLabel} disabled></Select>
+          : ( // TODO: Simplify this component after implementing hypermedia link access
+            <div className="selector-container">
+              <label className="label p-0">{sensorSelectLabel}</label>
+              <select
+                className="selector"
+                value={''}
+                onChange={() => {}}
+                disabled
+              ></select>
+            </div>
+          )
       }
     </div>
   )

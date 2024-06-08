@@ -1,13 +1,15 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
-interface EdgeState {
+interface FeatureState {
   selectedFeature: string,
+  selectedFeatureObservationsLink: string,
   updateSelectedFeature: (id: string) => void,
 }
 
-export const useFeature = createWithEqualityFn<EdgeState>((set) => {
+export const useFeature = createWithEqualityFn<FeatureState>((set) => {
   return {
     selectedFeature: '',
+    selectedFeatureObservationsLink: '',
     updateSelectedFeature: (id) => {
       set(() => {
         return {
