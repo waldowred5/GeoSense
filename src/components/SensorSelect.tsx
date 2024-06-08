@@ -5,10 +5,11 @@ import { useState } from "react";
 export const sensorSelectLabel = '...then select a Sensor';
 
 export const SensorSelect = () => {
-  const { selectedFeature } = useFeature();
+  const { selectedFeatureObservationsLink } = useFeature();
   const [selectedSensor, setSelectedSensor] = useState<string>('');
 
-  const sensors = useGetObservations(selectedFeature);
+  // const sensors = useGetObservations(selectedFeatureId);
+  const sensors = useGetObservations(selectedFeatureObservationsLink);
 
   if (sensors.error) {
     console.error('Error loading sensors:', sensors.error);

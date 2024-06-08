@@ -23,22 +23,27 @@ interface IFeatureSelectProps {
 
 // Future Improvement: Sort features alphabetically and/or add filtering
 export const FeatureSelect = ({ features, loading, error }: IFeatureSelectProps) => {
-  const { selectedFeature, updateSelectedFeature } = useFeature();
+  const { selectedFeatureId, selectedFeatureObservationsLink, updateSelectedFeature } = useFeature();
 
   return (
     <div className="selector-container">
       <label className="label p-0">First, select a Feature...</label>
       <select
         className="selector"
-        value={selectedFeature}
-        onChange={(e) => updateSelectedFeature(e.target.value)}
+        value={selectedFeatureObservationsLink}
+        onChange={(e) => {
+          updateSelectedFeature({
+            id: e.target.key,
+            observationsLink: e.target.value,
+          });
+        }}
         disabled={loading || !!error || false}
       >
         <option value="">Select a feature...</option>
         {
           features && features.map((feature: any) => (
-            <option key={feature["@iot.id"]} value={feature["@iot.id"]}>
-              {feature.name}
+            <option key={feature['@iot.id']} value={feature['Observations@iot.navigationLink']}>
+              {`${feature.name} - ${feature['@iot.id']}`}
             </option>
           ))
         }

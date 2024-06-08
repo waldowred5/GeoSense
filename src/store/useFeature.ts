@@ -1,19 +1,19 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface FeatureState {
-  selectedFeature: string,
+  selectedFeatureId: string,
   selectedFeatureObservationsLink: string,
-  updateSelectedFeature: (id: string) => void,
+  updateSelectedFeature: ({ id, observationsLink }: { id: string, observationsLink: string }) => void,
 }
 
 export const useFeature = createWithEqualityFn<FeatureState>((set) => {
   return {
-    selectedFeature: '',
-    selectedFeatureObservationsLink: '',
-    updateSelectedFeature: (id) => {
+    selectedFeature: { id: '', observationsLink: '' },
+    updateSelectedFeature: ({ id, observationsLink }) => {
       set(() => {
         return {
-          selectedFeature: id,
+          selectedFeatureId: id,
+          selectedFeatureObservationsLink: observationsLink,
         };
       });
     },

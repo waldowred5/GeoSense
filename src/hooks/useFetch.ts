@@ -10,7 +10,7 @@ export const useFetch = (url: string, options?: RequestInit) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${BASE_URL}${url}`, options);
+        const res = await fetch(url, options);
         if (!res.ok) {
           throw new Error(res.statusText);
         }
@@ -30,12 +30,54 @@ export const useFetch = (url: string, options?: RequestInit) => {
 };
 
 export const useGetFeatures = () => {
-  return useFetch('/FeaturesOfInterest');
+  const response = useFetch(`${BASE_URL}/FeaturesOfInterest`);
+
+  if (response.error) {
+    console.log('Error loading features:', response.error);
+  }
+
+  if (response.loading) {
+    return {
+      ...response,
+      data: null,
+    };
+  }
+
+  // TODO: Type this response
+  const sortedResponseData = response.data.sort((a: any, b: any) => {
+    if (`${a.name} - ${a['@iot.id']}` < `${b.name} - ${b['@iot.id']}`) {
+      return -1;
+    }
+    if (`${a.name} - ${a['@iot.id']}` > `${b.name} - ${b['@iot.id']}`) {
+      return 1;
+    }
+
+    return 0;
+  });
+
+  return { ...response, data: sortedResponseData };
 }
 
-export const useGetObservations = (sensorId: string) => {
-  // TODO: Put a guard here if sensorId is empty
-  return useFetch(`/FeaturesOfInterest(${sensorId})/Observations`);
+export const useGetObservations = (url: string) => {
+  const response = useFetch(url);
+
+  if (response.error) {
+    console.log('Error loading observations:', response.error);
+  }
+
+  if (response.loading) {
+    return {
+      ...response,
+      data: null,
+    };
+  }
+
+  // TODO: Type this response
+  const sortedResponseData = response.data.sort((a: any, b: any) => {
+    return a['@iot.id'] - b['@iot.id'];
+  });
+
+  return { ...response, data: sortedResponseData };
 }
 
 export const useGetSensors = (featureId: string) => {
