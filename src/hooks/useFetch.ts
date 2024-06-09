@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { buildUrlWithParams } from "../api/utils.ts";
 
 const BASE_URL = 'https://sensors.bgs.ac.uk/FROST-Server/v1.1';
 
@@ -31,15 +32,6 @@ export const useFetch = (url: string, options?: RequestInit) => {
   return { data, loading, error };
 };
 
-const buildUrlWithParams = (baseUrl: string, params: { [key: string]: string | number | boolean }) => {
-  const url = new URL(baseUrl);
-  Object.keys(params).forEach(key => url.searchParams.append(key, params[key].toString()));
-
-  console.log(url.toString());
-
-  return url.toString();
-};
-
 export const useGetFeatures = () => {
   const url = buildUrlWithParams(`${BASE_URL}/FeaturesOfInterest`, { '$filter': "feature/type eq 'Point'" });
   const response = useFetch(url);
@@ -68,7 +60,7 @@ export const useGetFeatures = () => {
   });
 
   return { ...response, data: sortedResponseData };
-}
+};
 
 export const useGetObservationsByFeature = (url: string) => {
   // return useFetch(url);
@@ -93,12 +85,12 @@ export const useGetObservationsByFeature = (url: string) => {
   });
 
   return { ...response, data: sortedResponseData };
-}
+};
 
 export const useGetObservationsBySensor = (url: string) => {
   return useFetch(url);
-}
+};
 
 export const useGetSensors = (featureId: string) => {
   return useFetch(`/FeaturesOfInterest/${featureId}/sensors`);
-}
+};

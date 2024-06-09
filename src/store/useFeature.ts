@@ -1,19 +1,5 @@
 import { createWithEqualityFn } from 'zustand/traditional';
-
-export type Feature = {
-  '@iot.id': number;
-  '@iot.selfLink': string;
-  'Observations@iot.navigationLink': string;
-  description: string;
-  encodingType: string;
-  feature: string;
-  name: string;
-  properties: {
-    publish_yn: string;
-    sen_id: string;
-    type: string;
-  };
-};
+import { Feature } from "../components/SelectorBar.tsx";
 
 interface FeatureState {
   features: Feature[],

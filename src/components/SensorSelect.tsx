@@ -1,6 +1,7 @@
 import { useFeature } from "../store/useFeature.ts";
 import { useSensor } from "../store/useSensor.ts";
 import { useGetObservationsByFeature } from "../hooks/useFetch.ts";
+// import { useQuery } from "@tanstack/react-query";
 
 export const sensorSelectLabel = '...then select a Sensor';
 
@@ -13,17 +14,18 @@ export const SensorSelect = () => {
     return {
       selectedSensorObservationsLink: state.selectedSensorObservationsLink,
       updateSelectedSensor: state.updateSelectedSensor,
-    }
+    };
   });
 
   const sensors = useGetObservationsByFeature(selectedFeatureObservationsLink);
+  // const { isLoading, isError, error, data } = useQuery(selectedFeatureObservationsLink);
 
   if (sensors.error) {
     console.error('Error loading sensors:', sensors.error);
     // TODO: Display error message to user and add retry button
   }
 
-  if (sensors.loading) {
+  if (sensors.loading || sensors.data.length === 0) {
     // TODO: Add loading spinner with 200ms delay to avoid quick load flickering
     return (
       <div className="selector-container">
@@ -31,30 +33,13 @@ export const SensorSelect = () => {
         <select
           className="selector"
           value={''}
-          onChange={() => {
-          }}
-          disabled
+          onChange={() => {}}
+          disabled={sensors.loading}
         >
-          <option>Loading sensors...</option>
+          <option>{sensors.loading ? 'Loading sensors...' : 'No sensors found'}</option>
         </select>
       </div>
-    )
-  }
-
-  if (!sensors.loading && sensors.data.length === 0) {
-    return (
-      <div className="selector-container">
-        <label className="label p-0">{sensorSelectLabel}</label>
-        <select
-          className="selector"
-          value={''}
-          onChange={() => {
-          }}
-        >
-          <option>No sensors found</option>
-        </select>
-      </div>
-    )
+    );
   }
 
   return (
@@ -71,16 +56,14 @@ export const SensorSelect = () => {
         <option value="">Select a sensor...</option>
         {
           sensors.data && sensors.data.map((sensor: any) => {
-            console.log(sensor);
-
             return (
               <option key={sensor['@iot.id']} value={sensor['Datastream@iot.navigationLink']}>
                 {sensor['@iot.id']}
               </option>
-            )
+            );
           })
         }
       </select>
     </div>
-  )
-}
+  );
+};
