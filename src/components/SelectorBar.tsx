@@ -1,7 +1,6 @@
 import { FeatureSelect } from "./FeatureSelect.tsx";
-import { SensorSelect, sensorSelectLabel } from "./SensorSelect.tsx";
+import { SensorSelect } from "./SensorSelect.tsx";
 import { FaChevronRight } from "react-icons/fa6";
-import { useFeature } from "../store/useFeature.ts";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL, buildUrlWithParams } from "../api/utils.ts";
 import { useEffect, useState } from "react";
@@ -27,8 +26,6 @@ type FeatureData = {
 
 export const SelectorBar = () => {
   const [features, setFeatures] = useState<Feature[]>([]);
-
-  const selectedFeatureObservationsLink = useFeature(state => state.selectedFeatureObservationsLink);
 
   // Queries
   const featuresUrl = buildUrlWithParams(`${BASE_URL}/FeaturesOfInterest`, { '$filter': "feature/type eq 'Point'" });
@@ -57,25 +54,11 @@ export const SelectorBar = () => {
 
   return (
     <div className="flex w-full items-center p-4 border-b-4 border-accent rounded-t-box gap-8">
-      <FeatureSelect features={features} disabled={isPending || isError} />
+      <FeatureSelect features={features} disabled={isPending || isError}/>
       <div className="text-4xl pt-[32px]">
-        <FaChevronRight />
+        <FaChevronRight/>
       </div>
-      {
-        selectedFeatureObservationsLink
-          ? <SensorSelect/>
-          : ( // TODO: Simplify this component after implementing hypermedia link access
-            <div className="selector-container">
-              <label className="label p-0">{sensorSelectLabel}</label>
-              <select
-                className="selector"
-                value={''}
-                onChange={() => {}}
-                disabled
-              ></select>
-            </div>
-          )
-      }
+      <SensorSelect/>
     </div>
   );
 };

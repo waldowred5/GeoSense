@@ -45,10 +45,11 @@ export const SensorSelect = () => {
     };
   });
 
-  const observationsUrl = buildUrlWithParams(selectedFeatureObservationsLink, { '$top': 5 });
+  const observationsUrl = selectedFeatureObservationsLink && buildUrlWithParams(selectedFeatureObservationsLink, { '$top': 5 });
   const { isLoading, isError, error, data } = useQuery<ObservationData>({
     queryKey: ['observations'],
     queryFn: () => fetch(observationsUrl).then((res) => res.json()),
+    enabled: !!selectedFeatureObservationsLink,
   });
 
   useEffect(() => {
@@ -66,8 +67,7 @@ export const SensorSelect = () => {
     // TODO: Display error message to user and add retry button
   }
 
-  if (isLoading || data?.value.length === 0) {
-    // TODO: Add loading spinner with 200ms delay to avoid quick load flickering
+  if (isLoading || observations.length === 0) {
     return (
       <div className="selector-container">
         <label className="label p-0">{sensorSelectLabel}</label>
@@ -75,9 +75,13 @@ export const SensorSelect = () => {
           className="selector"
           value={''}
           onChange={() => {}}
-          disabled={isLoading}
+          disabled={isLoading || !selectedFeatureObservationsLink}
         >
-          <option>{isLoading ? 'Loading sensors...' : 'No sensors found'}</option>
+          {
+            !selectedFeatureObservationsLink
+              ? <option></option>
+              : <option>{isLoading ? 'Loading sensors...' : 'No sensors found'}</option>
+          }
         </select>
       </div>
     );
