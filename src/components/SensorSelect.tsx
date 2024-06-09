@@ -5,32 +5,6 @@ import { buildUrlWithParams } from "../api/utils.ts";
 import { useEffect, useState } from "react";
 
 export const sensorSelectLabel = '...then select a Sensor';
-
-export type Observation = {
-  '@iot.id': number;
-  phenomenonTime: string;
-  parameters: {
-    sen_id: number;
-    publish_yn: string;
-  };
-  result: number;
-  resultTime: string;
-  resultQuality: {
-    reason: string;
-    status: string;
-    quality: string;
-    event_id: number;
-  };
-  '@iot.selfLink': string;
-  'Datastream@iot.navigationLink': string;
-  'FeatureOfInterest@iot.navigationLink': string;
-  'MultiDatastream@iot.navigationLink': string;
-};
-
-type ObservationData = {
-  value: Observation[];
-};
-
 export const SensorSelect = () => {
   const [observations, setObservations] = useState<Observation[]>([]);
 
@@ -98,7 +72,6 @@ export const SensorSelect = () => {
         <option value="">Select a sensor...</option>
         {
           observations && observations.map((observation) => {
-            console.log(observation);
             return (
               <option key={observation['@iot.id']} value={observation['Datastream@iot.navigationLink']}>
                 {observation['@iot.id']}

@@ -1,14 +1,7 @@
 import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
-import { Header } from "./components/Header.tsx";
-import { SelectorBar } from "./components/SelectorBar.tsx";
-import { StatsBar } from "./components/StatsBar.tsx";
-import { Observations } from "./components/Observations.tsx";
-import { useSensor } from "./store/useSensor.ts";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Dashboard } from "./components/Dashboard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -17,18 +10,9 @@ const App = () => {
     themeChange(false);
   }, []);
 
-  const { selectedSensorObservationsLink } = useSensor();
-
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex items-center flex-col gap-3 w-[100vw] h-[100vh]">
-        <Header/>
-        <div className="flex w-[96%] h-[94%] mb-8 card shadow-xl border rounded-box bg-base-300">
-          <SelectorBar/>
-          <StatsBar/>
-          {selectedSensorObservationsLink && <Observations/>}
-        </div>
-      </div>
+      <Dashboard />
     </QueryClientProvider>
   );
 };
