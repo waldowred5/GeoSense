@@ -17,8 +17,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
     "repo-visualizer": "^0.0.3",
-    "theme-change": "^2.5.0",
-    "zustand": "^4.5.2"
+    "theme-change": "^2.5.0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.35.6",
