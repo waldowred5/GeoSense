@@ -1,13 +1,17 @@
-import { Feature, useFeature } from "../store/useFeature.ts";
+import { Feature } from "./SelectorBar.tsx";
+import { useFeature } from "../store/useFeature.ts";
 
-export const FeatureSelect = ({ features, disabled }: any) => {
+interface IFeatureSelectProps {
+  features: Feature[];
+  disabled: boolean;
+}
+
+export const FeatureSelect = ({ features, disabled }: IFeatureSelectProps) => {
   const {
-    // features,
     selectedFeatureObservationsLink,
     updateSelectedFeature
   } = useFeature((state) => {
     return {
-      // features: state.features,
       selectedFeatureObservationsLink: state.selectedFeatureObservationsLink,
       updateSelectedFeature: state.updateSelectedFeature,
     };
@@ -20,10 +24,7 @@ export const FeatureSelect = ({ features, disabled }: any) => {
         className="selector"
         value={selectedFeatureObservationsLink}
         onChange={(e) => {
-          updateSelectedFeature({
-            id: e.target.key,
-            observationsLink: e.target.value,
-          });
+          updateSelectedFeature(e.target.value);
         }}
         disabled={disabled}
       >

@@ -1,11 +1,39 @@
 import { useFeature } from "../store/useFeature.ts";
 import { useSensor } from "../store/useSensor.ts";
-import { useGetObservationsByFeature } from "../hooks/useFetch.ts";
-// import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { buildUrlWithParams } from "../api/utils.ts";
+import { useEffect, useState } from "react";
 
 export const sensorSelectLabel = '...then select a Sensor';
 
+export type Observation = {
+  '@iot.id': number;
+  phenomenonTime: string;
+  parameters: {
+    sen_id: number;
+    publish_yn: string;
+  };
+  result: number;
+  resultTime: string;
+  resultQuality: {
+    reason: string;
+    status: string;
+    quality: string;
+    event_id: number;
+  };
+  '@iot.selfLink': string;
+  'Datastream@iot.navigationLink': string;
+  'FeatureOfInterest@iot.navigationLink': string;
+  'MultiDatastream@iot.navigationLink': string;
+};
+
+type ObservationData = {
+  value: Observation[];
+};
+
 export const SensorSelect = () => {
+  const [observations, setObservations] = useState<Observation[]>([]);
+
   const selectedFeatureObservationsLink = useFeature(state => state.selectedFeatureObservationsLink);
   const {
     selectedSensorObservationsLink,
@@ -17,15 +45,28 @@ export const SensorSelect = () => {
     };
   });
 
-  const sensors = useGetObservationsByFeature(selectedFeatureObservationsLink);
-  // const { isLoading, isError, error, data } = useQuery(selectedFeatureObservationsLink);
+  const observationsUrl = buildUrlWithParams(selectedFeatureObservationsLink, { '$top': 5 });
+  const { isLoading, isError, error, data } = useQuery<ObservationData>({
+    queryKey: ['observations'],
+    queryFn: () => fetch(observationsUrl).then((res) => res.json()),
+  });
 
-  if (sensors.error) {
-    console.error('Error loading sensors:', sensors.error);
+  useEffect(() => {
+    if (data?.value && data?.value.length > 0) {
+      const sortedObservations = data.value.sort((a, b) => {
+        return a['@iot.id'] - b['@iot.id'];
+      });
+
+      setObservations(sortedObservations);
+    }
+  }, [data]);
+
+  if (isError) {
+    console.error('Error loading sensors:', error);
     // TODO: Display error message to user and add retry button
   }
 
-  if (sensors.loading || sensors.data.length === 0) {
+  if (isLoading || data?.value.length === 0) {
     // TODO: Add loading spinner with 200ms delay to avoid quick load flickering
     return (
       <div className="selector-container">
@@ -34,9 +75,9 @@ export const SensorSelect = () => {
           className="selector"
           value={''}
           onChange={() => {}}
-          disabled={sensors.loading}
+          disabled={isLoading}
         >
-          <option>{sensors.loading ? 'Loading sensors...' : 'No sensors found'}</option>
+          <option>{isLoading ? 'Loading sensors...' : 'No sensors found'}</option>
         </select>
       </div>
     );
@@ -48,17 +89,15 @@ export const SensorSelect = () => {
       <select
         className="selector"
         value={selectedSensorObservationsLink}
-        onChange={(e) => updateSelectedSensor({
-          id: e.target.key,
-          observationsLink: e.target.value,
-        })}
+        onChange={(e) => updateSelectedSensor(e.target.value)}
       >
         <option value="">Select a sensor...</option>
         {
-          sensors.data && sensors.data.map((sensor: any) => {
+          observations && observations.map((observation) => {
+            console.log(observation);
             return (
-              <option key={sensor['@iot.id']} value={sensor['Datastream@iot.navigationLink']}>
-                {sensor['@iot.id']}
+              <option key={observation['@iot.id']} value={observation['Datastream@iot.navigationLink']}>
+                {observation['@iot.id']}
               </option>
             );
           })

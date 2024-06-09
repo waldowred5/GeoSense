@@ -4,7 +4,5 @@ export const buildUrlWithParams = (baseUrl: string, params: { [key: string]: str
   const url = new URL(baseUrl);
   Object.keys(params).forEach(key => url.searchParams.append(key, params[key].toString()));
 
-  console.log(url.toString());
-
   return url.toString();
 };

@@ -32,12 +32,9 @@ export const SelectorBar = () => {
 
   // Queries
   const featuresUrl = buildUrlWithParams(`${BASE_URL}/FeaturesOfInterest`, { '$filter': "feature/type eq 'Point'" });
-  const { isPending, isError, error, data } = useQuery<FeatureData>({
+  const { isPending, isError, data } = useQuery<FeatureData>({
     queryKey: ['features'],
-    queryFn: () =>
-    fetch(featuresUrl).then((res) =>
-      res.json(),
-    ),
+    queryFn: () => fetch(featuresUrl).then((res) => res.json()),
   });
 
   useEffect(() => {
@@ -60,7 +57,7 @@ export const SelectorBar = () => {
 
   return (
     <div className="flex w-full items-center p-4 border-b-4 border-accent rounded-t-box gap-8">
-      <FeatureSelect features={data?.value || []} disabled={isPending || isError} />
+      <FeatureSelect features={features} disabled={isPending || isError} />
       <div className="text-4xl pt-[32px]">
         <FaChevronRight />
       </div>
