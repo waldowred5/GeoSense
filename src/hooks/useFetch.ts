@@ -11,11 +11,13 @@ export const useFetch = (url: string, options?: RequestInit) => {
     const fetchData = async () => {
       try {
         const res = await fetch(url, options);
+
         if (!res.ok) {
           throw new Error(res.statusText);
         }
+
         const json = await res.json();
-        setData(json.value);
+        setData(json.value || json);
       } catch (error) {
         setError(error);
       } finally {
@@ -29,8 +31,18 @@ export const useFetch = (url: string, options?: RequestInit) => {
   return { data, loading, error };
 };
 
+const buildUrlWithParams = (baseUrl: string, params: { [key: string]: string | number | boolean }) => {
+  const url = new URL(baseUrl);
+  Object.keys(params).forEach(key => url.searchParams.append(key, params[key].toString()));
+
+  console.log(url.toString());
+
+  return url.toString();
+};
+
 export const useGetFeatures = () => {
-  const response = useFetch(`${BASE_URL}/FeaturesOfInterest`);
+  const url = buildUrlWithParams(`${BASE_URL}/FeaturesOfInterest`, { '$filter': "feature/type eq 'Point'" });
+  const response = useFetch(url);
 
   if (response.error) {
     console.log('Error loading features:', response.error);
@@ -58,29 +70,33 @@ export const useGetFeatures = () => {
   return { ...response, data: sortedResponseData };
 }
 
-export const useGetObservations = (url: string) => {
-  return useFetch(url);
+export const useGetObservationsByFeature = (url: string) => {
+  // return useFetch(url);
 
   // TODO: Implement sorting of observations
-  // const response = useFetch(url);
+  const response = useFetch(url);
 
-  // if (response.error) {
-  //   console.log('Error loading observations:', response.error);
-  // }
-  //
-  // if (response.loading) {
-  //   return {
-  //     ...response,
-  //     data: null,
-  //   };
-  // }
-  //
-  // // TODO: Type this response
-  // const sortedResponseData = response.data.sort((a: any, b: any) => {
-  //   return a['@iot.id'] - b['@iot.id'];
-  // });
-  //
-  // return { ...response, data: sortedResponseData };
+  if (response.error) {
+    console.log('Error loading observations:', response.error);
+  }
+
+  if (response.loading) {
+    return {
+      ...response,
+      data: null,
+    };
+  }
+
+  // TODO: Type this response
+  const sortedResponseData = response.data.sort((a: any, b: any) => {
+    return a['@iot.id'] - b['@iot.id'];
+  });
+
+  return { ...response, data: sortedResponseData };
+}
+
+export const useGetObservationsBySensor = (url: string) => {
+  return useFetch(url);
 }
 
 export const useGetSensors = (featureId: string) => {

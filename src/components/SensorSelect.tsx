@@ -1,15 +1,22 @@
 import { useFeature } from "../store/useFeature.ts";
-import { useGetObservations } from "../hooks/useFetch.ts";
-import { useState } from "react";
+import { useSensor } from "../store/useSensor.ts";
+import { useGetObservationsByFeature } from "../hooks/useFetch.ts";
 
 export const sensorSelectLabel = '...then select a Sensor';
 
 export const SensorSelect = () => {
-  const { selectedFeatureObservationsLink } = useFeature();
-  const [selectedSensor, setSelectedSensor] = useState<string>('');
+  const selectedFeatureObservationsLink = useFeature(state => state.selectedFeatureObservationsLink);
+  const {
+    selectedSensorObservationsLink,
+    updateSelectedSensor
+  } = useSensor((state) => {
+    return {
+      selectedSensorObservationsLink: state.selectedSensorObservationsLink,
+      updateSelectedSensor: state.updateSelectedSensor,
+    }
+  });
 
-  // const sensors = useGetObservations(selectedFeatureId);
-  const sensors = useGetObservations(selectedFeatureObservationsLink);
+  const sensors = useGetObservationsByFeature(selectedFeatureObservationsLink);
 
   if (sensors.error) {
     console.error('Error loading sensors:', sensors.error);
@@ -24,7 +31,8 @@ export const SensorSelect = () => {
         <select
           className="selector"
           value={''}
-          onChange={() => {}}
+          onChange={() => {
+          }}
           disabled
         >
           <option>Loading sensors...</option>
@@ -40,7 +48,8 @@ export const SensorSelect = () => {
         <select
           className="selector"
           value={''}
-          onChange={() => {}}
+          onChange={() => {
+          }}
         >
           <option>No sensors found</option>
         </select>
@@ -53,16 +62,23 @@ export const SensorSelect = () => {
       <label className="label p-0">{sensorSelectLabel}</label>
       <select
         className="selector"
-        value={selectedSensor}
-        onChange={(e) => setSelectedSensor(e.target.value)}
+        value={selectedSensorObservationsLink}
+        onChange={(e) => updateSelectedSensor({
+          id: e.target.key,
+          observationsLink: e.target.value,
+        })}
       >
         <option value="">Select a sensor...</option>
         {
-          sensors.data && sensors.data.map((sensor: any) => (
-            <option key={sensor['@iot.id']} value={sensor['@iot.id']}>
-              {sensor['@iot.id']}
-            </option>
-          ))
+          sensors.data && sensors.data.map((sensor: any) => {
+            console.log(sensor);
+
+            return (
+              <option key={sensor['@iot.id']} value={sensor['Datastream@iot.navigationLink']}>
+                {sensor['@iot.id']}
+              </option>
+            )
+          })
         }
       </select>
     </div>

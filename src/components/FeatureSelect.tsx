@@ -1,29 +1,17 @@
-import { useFeature } from "../store/useFeature.ts";
+import { Feature, useFeature } from "../store/useFeature.ts";
 
-type Feature = {
-  '@iot.id': number;
-  '@iot.selfLink': string;
-  'Observations@iot.navigationLink': string;
-  description: string;
-  encodingType: string;
-  feature: string;
-  name: string;
-  properties: {
-    publish_yn: string;
-    sen_id: string;
-    type: string;
-  };
-}
-
-interface IFeatureSelectProps {
-  features: Feature[];
-  loading: boolean;
-  error: any; // TODO: Type error
-}
-
-// Future Improvement: Sort features alphabetically and/or add filtering
-export const FeatureSelect = ({ features, loading, error }: IFeatureSelectProps) => {
-  const { selectedFeatureId, selectedFeatureObservationsLink, updateSelectedFeature } = useFeature();
+export const FeatureSelect = () => {
+  const {
+    features,
+    selectedFeatureObservationsLink,
+    updateSelectedFeature
+  } = useFeature((state) => {
+    return {
+      features: state.features,
+      selectedFeatureObservationsLink: state.selectedFeatureObservationsLink,
+      updateSelectedFeature: state.updateSelectedFeature,
+    }
+  });
 
   return (
     <div className="selector-container">
@@ -37,15 +25,18 @@ export const FeatureSelect = ({ features, loading, error }: IFeatureSelectProps)
             observationsLink: e.target.value,
           });
         }}
-        disabled={loading || !!error || false}
+        disabled={!features}
       >
-        <option value="">Select a feature...</option>
+        <option value="">{`Select a feature... (${features.length})`}</option>
         {
-          features && features.map((feature: any) => (
-            <option key={feature['@iot.id']} value={feature['Observations@iot.navigationLink']}>
-              {`${feature.name} - ${feature['@iot.id']}`}
-            </option>
-          ))
+          features && features.map((feature: Feature) => {
+            console.log(feature);
+
+            return (
+              <option key={feature['@iot.id']} value={feature['Observations@iot.navigationLink']}>
+                {`${feature.name} - ${feature['@iot.id']}: ${feature.feature}`}
+              </option>
+            )})
         }
       </select>
     </div>
