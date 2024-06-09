@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { EntityData, Observation } from "../../types.ts";
 import { BASE_URL, buildUrlWithParams } from "../../api/utils.ts";
 import { useQuery } from "@tanstack/react-query";
 
 interface IFetchFirstObservationProps {
-  setData: React.Dispatch<React.SetStateAction<Observation[]>>;
+  setData: (data: number) => void;
   datastreamId: number;
 }
 

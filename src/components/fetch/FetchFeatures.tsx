@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { EntityData, Feature } from "../../types.ts";
 import { BASE_URL, buildUrlWithParams } from "../../api/utils.ts";
 import { useQuery } from "@tanstack/react-query";
 
 interface IFetchFeaturesProps {
-  setData: React.Dispatch<React.SetStateAction<Feature[]>>;
+  setData: (data: Feature[]) => void;
 }
 
 export const FetchFeatures = ({ setData }: IFetchFeaturesProps) => {
-  const featuresUrl = buildUrlWithParams(`${BASE_URL}/FeaturesOfInterest`, { '$filter': "feature/type eq 'Point'", "$top": 5 });
+  const featuresUrl = buildUrlWithParams(`${BASE_URL}/FeaturesOfInterest`, { '$count': true });
   const {
     isPending,
     isError,
@@ -20,7 +20,15 @@ export const FetchFeatures = ({ setData }: IFetchFeaturesProps) => {
 
   useEffect(() => {
     if (!isPending && !isError) {
-      const sortedFeatures = data.value.sort((a, b) => {
+      const filteredFeatures = data.value.filter((feature) => {
+        if (typeof feature.feature !== 'string' || feature.name.includes('GasClam')) {
+          return feature;
+        }
+
+        return;
+      });
+
+      const sortedFeatures = filteredFeatures.sort((a, b) => {
         if (`${a.name} - ${a['@iot.id']}` < `${b.name} - ${b['@iot.id']}`) {
           return -1;
         }

@@ -1,39 +1,41 @@
-import { Feature } from "./SelectorBar.tsx";
-import { useFeature } from "../store/useFeature.ts";
+// import { useFeature } from "../store/useFeature.ts";
+import { Feature } from "../types.ts";
 
 interface IFeatureSelectProps {
   features: Feature[];
   disabled: boolean;
+  selectedFeature: string;
+  setSelectedFeature: (feature: string) => void;
 }
 
-export const FeatureSelect = ({ features, disabled }: IFeatureSelectProps) => {
-  const {
-    selectedFeatureObservationsLink,
-    updateSelectedFeature
-  } = useFeature((state) => {
-    return {
-      selectedFeatureObservationsLink: state.selectedFeatureObservationsLink,
-      updateSelectedFeature: state.updateSelectedFeature,
-    };
-  });
+export const FeatureSelect = ({ features, disabled, selectedFeature, setSelectedFeature }: IFeatureSelectProps) => {
+  // const {
+  //   selectedFeatureObservationsLink,
+  //   updateSelectedFeature
+  // } = useFeature((state) => {
+  //   return {
+  //     selectedFeatureObservationsLink: state.selectedFeatureObservationsLink,
+  //     updateSelectedFeature: state.updateSelectedFeature,
+  //   };
+  // });
 
   return (
     <div className="selector-container">
       <label className="label p-0">First, select a Feature...</label>
       <select
         className="selector"
-        value={selectedFeatureObservationsLink}
+        value={selectedFeature}
         onChange={(e) => {
-          updateSelectedFeature(e.target.value);
+          setSelectedFeature(e.target.value);
         }}
-        disabled={disabled}
+        disabled={disabled || features.length === 0}
       >
-        <option value="">{`Select a feature... (${features.length})`}</option>
+        <option value="">{`Select a feature...`}</option>
         {
           features && features.map((feature: Feature) => {
             return (
-              <option key={feature['@iot.id']} value={feature['Observations@iot.navigationLink']}>
-                {`${feature.name} - ${feature['@iot.id']}: ${feature.feature}`}
+              <option key={feature['@iot.id']} value={feature['@iot.id']}>
+                {`${feature.name} - ${feature['@iot.id']}`}
               </option>
             );})
         }

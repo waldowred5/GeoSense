@@ -1,4 +1,10 @@
-export const Observations = () => {
+import { Observation } from "../types.ts";
+
+interface IObservationsProps {
+  observationsData: Observation[];
+}
+
+export const Observations = ({ observationsData }: IObservationsProps) => {
   // const selectedSensorObservationsLink = useSensor(state => state.selectedSensorObservationsLink);
   // const observations = useGetObservationsBySensor(selectedSensorObservationsLink);
 

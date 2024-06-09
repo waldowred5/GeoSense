@@ -5,6 +5,7 @@ export type EntityData<T> = {
 export type Datastream = {
   '@iot.id': number;
   '@iot.selfLink': string;
+  'Observations@iot.navigationLink': string;
   description: string;
   name: string;
   observationType: string;
@@ -33,7 +34,10 @@ export interface DatastreamsByFeature {
   [featureId: string]: Datastream[];
 }
 
-// DatastreamsByFeature extends Record<string, Datastream[]>;
+export type FeatureFeature = {
+  type: string;
+  coordinates: number[];
+};
 
 export type Feature = {
   '@iot.id': number;
@@ -41,7 +45,7 @@ export type Feature = {
   'Observations@iot.navigationLink': string;
   description: string;
   encodingType: string;
-  feature: string;
+  feature: FeatureFeature | string;
   name: string;
   properties: {
     publish_yn: string;

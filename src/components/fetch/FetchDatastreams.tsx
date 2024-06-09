@@ -4,11 +4,11 @@ import { BASE_URL, buildUrlWithParams } from "../../api/utils.ts";
 import { useQueries, useQuery } from "@tanstack/react-query";
 
 interface IFetchDatastreamsProps {
-  setData: React.Dispatch<React.SetStateAction<Datastream[]>>;
+  setData: (data: Datastream[]) => void;
 }
 
 export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
-  const datastreamsUrl = buildUrlWithParams(`${BASE_URL}/Datastreams`, { '$count': true, "$top": 5 });
+  const datastreamsUrl = buildUrlWithParams(`${BASE_URL}/Datastreams`, { '$count': true, "$top": 250 });
   const {
     isPending,
     isError,
@@ -52,17 +52,15 @@ export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
       return;
     }
 
+    // TODO: Fix typing here
     firstObservationQueries.forEach((query) => {
       let datastreamId = '';
-
-      console.log('query.data', query.data);
 
       if ('@iot.nextLink' in query?.data) {
         datastreamId = query?.data['@iot.nextLink'].match(/Datastreams\((\d+)\)/)[1] || '';
 
         data?.value.map((ds) => {
           if (ds['@iot.id'].toString() === datastreamId) {
-            console.log('Hello! datastream', ds);
             ds.FeatureOfInterest = query.data.value[0].FeatureOfInterest;
           }
 

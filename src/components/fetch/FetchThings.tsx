@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { EntityData, Thing } from "../../types.ts";
 import { BASE_URL, buildUrlWithParams } from "../../api/utils.ts";
 import { useQuery } from "@tanstack/react-query";
 
 interface IFetchThingsProps {
-  setData: React.Dispatch<React.SetStateAction<Thing[]>>;
+  setData: (data: Thing[]) => void;
 }
 
 export const FetchThings = ({ setData }: IFetchThingsProps) => {
-  const thingsUrl = buildUrlWithParams(`${BASE_URL}/Things`, { '$expand': "Datastreams", "$top": 5 });
+  useEffect(() => {
+    console.log('Fetching Things...');
+  }, []);
+
+  const thingsUrl = buildUrlWithParams(`${BASE_URL}/Things`, { '$expand': "Datastreams" });
   const {
     isPending,
     isError,
