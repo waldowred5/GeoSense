@@ -35,7 +35,7 @@ export const Observations = ({ observationsData, isLoading }: IObservationsProps
     if (observationsData) {
       const data = observationsData.map((observation) => {
         return {
-          x: new Date(observation.phenomenonTime).toISOString(),
+          x: new Date(observation.phenomenonTime).toISOString().slice(0, -8),
           y: observation.result,
         };
       });
@@ -44,7 +44,10 @@ export const Observations = ({ observationsData, isLoading }: IObservationsProps
         return new Date(a.x).getTime() - new Date(b.x).getTime();
       });
 
-      const labels = sortedData.map((data) => data.x);
+      const labels = sortedData.map((data) => {
+        // return data.x after trimming last 8 characters
+        return data.x;
+      });
 
       setChartData({
         labels,

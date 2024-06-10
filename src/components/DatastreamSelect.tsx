@@ -35,7 +35,7 @@ export const DatastreamSelect = (
 
   useEffect(() => {
     if (selectedDatastreamUrl) {
-      const url = buildUrlWithParams(selectedDatastreamUrl, { '$count': true, '$filter': `year(phenomenonTime) eq 2023` });
+      const url = buildUrlWithParams(selectedDatastreamUrl, { '$count': true, '$top': 500, '$filter': `year(phenomenonTime) eq 2023` });
       setObservationsUrl(url);
     }
   }, [selectedDatastreamUrl]);

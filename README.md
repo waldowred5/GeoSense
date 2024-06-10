@@ -6,8 +6,8 @@ A simple web app for exploring British Geological Survey (BGS) geoscientific IoT
 - The optimal relationships to fetch all features of interest and then all the related datastreams from the BGS API are not directly available so some data manipulation is required
 
 ### Known Issues:
-- When selecting some datastreams, 2 separate queries are made instead of 1. Requires investigation...
-- Sorting observations by date is not working as expected. Requires investigation...
+- When selecting some datastreams, 2 result sets are returned instead of 1. Requires investigation...
+- When requesting more than 672 records the API limits the response to 672 records. As dates are not guaranteed to be returned in order from the API some entries may be accidentally excluded. This can be improved by fetching data in smaller chunks and sorting the results before displaying them. See suggested improvements below
 
 ### Features:
 - Display a list of features of interest (filtered to exclude features without datastreams)
