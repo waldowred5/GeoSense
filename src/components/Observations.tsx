@@ -30,7 +30,7 @@ interface IObservationsProps {
 }
 
 export const Observations = ({ observationsData, isLoading, chartTheme }: IObservationsProps) => {
-  const [chartData, setChartData] = useState<ChartData<'line'>>({ datasets: [] });
+  const [chartData, setChartData] = useState<ChartData<'line', { x: string; y: number; }[]>>({ datasets: [] });
 
   useEffect(() => {
     if (observationsData) {
@@ -60,7 +60,7 @@ export const Observations = ({ observationsData, isLoading, chartTheme }: IObser
           borderColor: chartTheme === 'light' ? '#FF00D3' : '#828CF8',
           pointBackgroundColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
           pointBorderColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
-        }]
+        }],
       });
     }
   }, [observationsData]);
