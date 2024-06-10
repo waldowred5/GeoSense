@@ -31,7 +31,7 @@ export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
     return res.json();
   };
 
-  const firstObservationQueries = useQueries({
+  const firstObservationQueries = useQueries<EntityData<Datastream>[]>({
     queries: data?.value ? data.value.map((datastream) => {
       return {
         queryKey: ['firstObservation', datastream['@iot.id']],
@@ -52,11 +52,11 @@ export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
       return;
     }
 
-    // TODO: Fix typing here
+    // Future improvement: Come up with a more elegant and type-safe way to match the datastreams with their first observation without using grep
     firstObservationQueries.forEach((query) => {
       let datastreamId = '';
 
-      if ('@iot.nextLink' in query?.data) {
+      if ('@iot.nextLink' in query && query?.data) {
         datastreamId = query?.data['@iot.nextLink'].match(/Datastreams\((\d+)\)/)[1] || '';
 
         data?.value.map((ds) => {
