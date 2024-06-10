@@ -8,7 +8,7 @@ interface IFetchDatastreamsProps {
 }
 
 export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
-  const datastreamsUrl = buildUrlWithParams(`${BASE_URL}/Datastreams`, { '$count': true, "$top": 250 });
+  const datastreamsUrl = buildUrlWithParams(`${BASE_URL}/Datastreams`, { '$count': true, "$filter": "properties/data_type ne 'Information'" });
   const {
     isPending,
     isError,
