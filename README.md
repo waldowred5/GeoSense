@@ -20,7 +20,7 @@ A simple web app for exploring British Geological Survey (BGS) geoscientific IoT
 
 ### Future Improvements:
 - Increase test coverage to 80% or more
-- Add more error handling for failed API requests
+- Add error handling for failed API requests and edge cases
 - Allow users to select a particular time period (year / month) for the observations they wish to see (would aid in reducing the number of observations fetched)
 - Optimise data fetching by only selecting required fields in query to reduce API data egress and load times
 - Add Google Maps API for location display ([3d Maps](https://developers.google.com/maps/documentation/javascript/3d-maps-getting-started?hl=en))
