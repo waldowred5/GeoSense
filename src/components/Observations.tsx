@@ -1,49 +1,110 @@
 import { Observation } from "../types.ts";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartData,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import { useEffect, useState } from "react";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 interface IObservationsProps {
+  isLoading: boolean;
   observationsData: Observation[];
+  chartTheme: 'light' | 'synthwave';
 }
 
-export const Observations = ({ observationsData }: IObservationsProps) => {
-  // const selectedSensorObservationsLink = useSensor(state => state.selectedSensorObservationsLink);
-  // const observations = useGetObservationsBySensor(selectedSensorObservationsLink);
+export const Observations = ({ observationsData, isLoading, chartTheme }: IObservationsProps) => {
+  const [chartData, setChartData] = useState<ChartData<'line', { x: string; y: number; }[]>>({ datasets: [] });
 
-  // if (observations.error) {
-  //   console.error('Error loading observations:', observations.error);
-  //   // TODO: Display error message to user and add retry button
-  // }
-  //
-  // if (observations.loading) {
-  //   return (
-  //     <div>
-  //       <h1>Observations</h1>
-  //       <p>Observations Loading...</p>
-  //     </div>
-  //   )
-  // }
+  useEffect(() => {
+    if (observationsData) {
+      const data = observationsData.map((observation) => {
+        return {
+          x: new Date(observation.phenomenonTime).toISOString().slice(0, -8),
+          y: observation.result,
+        };
+      });
 
-  // if (!observations.loading && observations.data?.length === 0) {
-  //   return (
-  //     <div>
-  //       <h1>Observations</h1>
-  //       <p>No observations found</p>
-  //     </div>
-  //   )
-  // }
+      const sortedData = data.sort((a, b) => {
+        return new Date(a.x).getTime() - new Date(b.x).getTime();
+      });
+
+      const labels = sortedData.map((data) => {
+        return data.x;
+      });
+
+      setChartData({
+        labels,
+        datasets: [{
+          data: sortedData,
+          borderWidth: 1,
+          fill: false,
+          pointStyle: 'circle',
+          pointRadius: 1,
+          borderColor: chartTheme === 'light' ? '#FF00D3' : '#828CF8',
+          pointBackgroundColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+          pointBorderColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+        }],
+      });
+    }
+  }, [observationsData]);
+
+  useEffect(() => {
+    setChartData({
+      ...chartData,
+      datasets: chartData.datasets.map((dataset) => ({
+        ...dataset,
+        borderColor: chartTheme === 'light' ? '#FF00D3' : '#828CF8',
+        pointBackgroundColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+        pointBorderColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+    })) });
+  }, [chartTheme]);
 
   return (
-    <div>
-      <h1>Observations</h1>
-      {/*{*/}
-      {/*  selectedSensorObservationsLink && observations.data*/}
-      {/*    ? observations.data.map((observation: any) => (*/}
-      {/*      <div key={observation['@iot.id']}>*/}
-      {/*        <p>{observation['@iot.id']}</p>*/}
-      {/*        <p>{observation.result}</p>*/}
-      {/*      </div>*/}
-      {/*    ))*/}
-      {/*    : <p>No observations found</p>*/}
-      {/*}*/}
+    <div className="h-[95%] w-full relative flex items-center justify-center">
+      {
+        isLoading
+          ? <span className="loading loading-ring loading-lg"></span>
+          : <Line
+            data={chartData}
+            options={{
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  grid: {
+                    color: chartTheme === 'light' ? '#6A6A6A' : '#5C5D5E'
+                  },
+                },
+                y: {
+                  beginAtZero: false,
+                  grid: {
+                    color: chartTheme === 'light' ? '#6A6A6A' : '#5C5D5E'
+                  },
+                }
+              },
+              plugins: {
+                title: { display: false },
+                legend: { display: false },
+              }
+            }}
+          />
+      }
     </div>
   );
 };

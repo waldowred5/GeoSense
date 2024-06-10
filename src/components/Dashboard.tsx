@@ -7,8 +7,34 @@ import { FetchThings } from "./fetch/FetchThings.tsx";
 import { FetchFeatures } from "./fetch/FetchFeatures.tsx";
 import { FetchDatastreams } from "./fetch/FetchDatastreams.tsx";
 import { SelectorBar } from "./SelectorBar.tsx";
+import { themeChange } from 'theme-change';
 
 export const Dashboard = () => {
+  // Theme
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'synthwave'>('light');
+  const [chartTheme, setChartTheme] = useState<'light' | 'synthwave'>(currentTheme);
+
+  useEffect(() => {
+    themeChange(false);
+
+    const deviceTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const savedTheme = localStorage.getItem('theme');
+
+    if (!savedTheme) {
+      localStorage.setItem('theme', deviceTheme === 'dark' ? 'synthwave' : 'light');
+      document.documentElement.setAttribute('data-theme', deviceTheme === 'dark' ? 'synthwave' : 'light');
+      setCurrentTheme(deviceTheme === 'dark' ? 'synthwave' : 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      setCurrentTheme(savedTheme as 'light' | 'synthwave');
+    }
+  }, []);
+
+  useEffect(() => {
+    setChartTheme(currentTheme);
+  }, [currentTheme]);
+
+  // Fetch data
   const [things, setThings] = useState<Thing[]>([]);
   const [features, setFeatures] = useState<Feature[]>([]);
   const [datastreams, setDatastreams] = useState<Datastream[]>([]);
@@ -16,6 +42,8 @@ export const Dashboard = () => {
   const [filteredFeatures, setFilteredFeatures] = useState<Feature[]>([]);
   const [isFeatureListLoading, setIsFeatureListLoading] = useState(true);
   const [observationsData, setObservationsData] = useState<Observation[]>([]);
+  const [observationsCount, setObservationsCount] = useState<number>(0);
+  const [observationsLoading, setObservationsLoading] = useState(false);
 
   useEffect(() => {
     if (things.length > 0 && features.length > 0 && datastreams.length > 0) {
@@ -69,24 +97,32 @@ export const Dashboard = () => {
 
   useEffect(() => {
     console.log('observationsData', observationsData);
-  }, [observationsData]);
+  }, [observationsLoading]);
 
   return (
     <>
-      <FetchThings setData={setThings} />
-      <FetchFeatures setData={setFeatures} />
-      <FetchDatastreams setData={setDatastreams} />
+      <FetchThings setData={setThings}/>
+      <FetchFeatures setData={setFeatures}/>
+      <FetchDatastreams setData={setDatastreams}/>
       <div className="flex items-center flex-col gap-3 w-[100vw] h-[100vh]">
-        <Header/>
+        <Header setChartTheme={setChartTheme}/>
         <div className="flex w-[96%] h-[94%] mb-8 card shadow-xl border rounded-box bg-base-300">
           <SelectorBar
             features={filteredFeatures}
             isFeatureListLoading={isFeatureListLoading}
             datastreams={datastreamsByFeature}
             setObservationsData={setObservationsData}
+            setObservationsCount={setObservationsCount}
+            setObservationsLoading={setObservationsLoading}
           />
-          <StatsBar observationsData={observationsData} />
-          <Observations observationsData={observationsData} />
+          <StatsBar observationsData={observationsData} observationsCount={observationsCount}/>
+          <div className="h-full p-4">
+            <Observations
+              isLoading={observationsLoading}
+              chartTheme={chartTheme}
+              observationsData={observationsData}
+            />
+          </div>
         </div>
       </div>
     </>

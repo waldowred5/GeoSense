@@ -7,42 +7,58 @@ interface ISensorSelectProps {
   datastreams: DatastreamsByFeature;
   selectedFeature: string;
   setObservationsData: (data: Observation[]) => void;
+  setObservationsCount: (count: number) => void;
+  setObservationsLoading: (loading: boolean) => void;
 }
 
-export const SensorSelect = ({ datastreams, selectedFeature, setObservationsData }: ISensorSelectProps) => {
-  const [selectedDatastream, setSelectedDatastream] = useState<string>('');
+export const DatastreamSelect = (
+  {
+    datastreams,
+    selectedFeature,
+    setObservationsData,
+    setObservationsCount,
+    setObservationsLoading,
+  }: ISensorSelectProps) => {
+  const [selectedDatastreamUrl, setSelectedDatastreamUrl] = useState<string>('');
   const [observationsUrl, setObservationsUrl] = useState<string>('');
 
   const {
     isPending,
     isError,
+    isFetching,
     data,
   } = useQuery<EntityData<Observation>>({
-    queryKey: ['observations', selectedDatastream],
+    queryKey: [`observations:${selectedDatastreamUrl}`, selectedDatastreamUrl],
     queryFn: () => fetch(observationsUrl).then((res) => res.json()),
-    enabled: !!selectedDatastream,
+    enabled: !!selectedDatastreamUrl,
   });
 
   useEffect(() => {
-    if (selectedDatastream) {
-      const url = buildUrlWithParams(selectedDatastream, { '$count': true, '$top': 100 });
+    if (selectedDatastreamUrl) {
+      const url = buildUrlWithParams(selectedDatastreamUrl, { '$count': true, '$top': 500, '$filter': `year(phenomenonTime) eq 2023` });
       setObservationsUrl(url);
     }
-  }, [selectedDatastream]);
+  }, [selectedDatastreamUrl]);
 
   useEffect(() => {
-    if (!isPending && !isError) {
-      setObservationsData(data.value);
+    if (isFetching) {
+      setObservationsLoading(true);
     }
-  }, [data, isPending, isError, setObservationsData]);
+
+    if (!isPending && !isError) {
+      setObservationsCount(data['@iot.count'] || 0);
+      setObservationsData(data.value);
+      setObservationsLoading(false);
+    }
+  }, [data, isPending, isError, isFetching, setObservationsData, setObservationsCount, setObservationsLoading]);
 
   return (
     <div className="selector-container">
       <label className="label p-0">...then select a Datastream</label>
       <select
         className="selector"
-        value={selectedDatastream}
-        onChange={(e) => setSelectedDatastream(e.target.value)}
+        value={selectedDatastreamUrl}
+        onChange={(e) => setSelectedDatastreamUrl(e.target.value)}
         disabled={!selectedFeature}
       >
         <option value="">Select a datastream...</option>

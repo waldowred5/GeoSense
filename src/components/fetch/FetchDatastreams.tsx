@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Datastream, EntityData } from "../../types.ts";
 import { BASE_URL, buildUrlWithParams } from "../../api/utils.ts";
 import { useQueries, useQuery } from "@tanstack/react-query";
@@ -8,7 +8,7 @@ interface IFetchDatastreamsProps {
 }
 
 export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
-  const datastreamsUrl = buildUrlWithParams(`${BASE_URL}/Datastreams`, { '$count': true, "$top": 250 });
+  const datastreamsUrl = buildUrlWithParams(`${BASE_URL}/Datastreams`, { '$count': true, "$filter": "properties/data_type ne 'Information'" });
   const {
     isPending,
     isError,
