@@ -24,6 +24,7 @@ export const StatsBar = ({ observationsData, observationsCount, observationsLoad
 
   useEffect(() => {
     if (observationsData.length > 0) {
+      console.log(observationsData);
       setDataPointsCount(observationsCount.toString());
 
       const minVal = Math.min(...observationsData.map(observation => observation.result));
@@ -44,10 +45,10 @@ export const StatsBar = ({ observationsData, observationsCount, observationsLoad
 
   return (
     <div className="flex justify-around border-b-4 border-accent p-4">
-      <h3 className="font-semibold">DATA POINTS: {dataPointsCount ? dataPointsCount : '--'}</h3>
-      <h3 className="font-semibold">MIN: {minValue ? minValue : '--'}</h3>
-      <h3 className="font-semibold">MAX: {maxValue ? maxValue : '--'}</h3>
-      <h3 className="font-semibold">MEAN: {meanValue ? meanValue : '--'}</h3>
+      <h3 className="font-semibold">DATA POINTS: { dataPointsCount }</h3>
+      <h3 className="font-semibold">MIN: { minValue }</h3>
+      <h3 className="font-semibold">MAX: { maxValue }</h3>
+      <h3 className="font-semibold">MEAN: { meanValue }</h3>
     </div>
   );
 };
