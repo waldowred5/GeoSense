@@ -56,7 +56,7 @@ export const FetchDatastreams = ({ setData }: IFetchDatastreamsProps) => {
     firstObservationQueries.forEach((query) => {
       let datastreamId = '';
 
-      if ('@iot.nextLink' in query && query?.data) {
+      if ('@iot.nextLink' in query?.data) {
         datastreamId = query?.data['@iot.nextLink'].match(/Datastreams\((\d+)\)/)[1] || '';
 
         data?.value.map((ds) => {

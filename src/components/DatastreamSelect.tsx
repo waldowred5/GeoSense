@@ -3,6 +3,8 @@ import { buildUrlWithParams } from "../api/utils.ts";
 import { useEffect, useState } from "react";
 import { DatastreamsByFeature, EntityData, Observation } from "../types.ts";
 
+type OptionValue = { id: number, url: string }
+
 interface ISensorSelectProps {
   datastreams: DatastreamsByFeature;
   selectedFeature: string;
@@ -19,8 +21,10 @@ export const DatastreamSelect = (
     setObservationsCount,
     setObservationsLoading,
   }: ISensorSelectProps) => {
-  const [selectedDatastreamUrl, setSelectedDatastreamUrl] = useState<string>('');
+  const [selectedDatastream, setSelectedDatastreamUrl] = useState<string>('');
   const [observationsUrl, setObservationsUrl] = useState<string>('');
+  const [datastreamId, setDatastreamId] = useState<number>(0);
+  const [datastreamUrl, setDatastreamUrl] = useState<string>('');
 
   const {
     isPending,
@@ -28,44 +32,59 @@ export const DatastreamSelect = (
     isFetching,
     data,
   } = useQuery<EntityData<Observation>>({
-    queryKey: [`observations:${selectedDatastreamUrl}`, selectedDatastreamUrl],
+    queryKey: [`observations:${datastreamId}`, datastreamUrl],
     queryFn: () => fetch(observationsUrl).then((res) => res.json()),
-    enabled: !!selectedDatastreamUrl,
+    enabled: !!datastreamUrl,
   });
 
   useEffect(() => {
-    if (selectedDatastreamUrl) {
-      const url = buildUrlWithParams(selectedDatastreamUrl, { '$count': true, '$top': 500, '$filter': `year(phenomenonTime) eq 2023` });
-      setObservationsUrl(url);
+    if (selectedDatastream) {
+      const { id, url } = JSON.parse(selectedDatastream) as OptionValue;
+      setDatastreamId(id);
+      setDatastreamUrl(url);
     }
-  }, [selectedDatastreamUrl]);
+  }, [selectedDatastream]);
+
+  useEffect(() => {
+    if (selectedDatastream) {
+      const { url } = JSON.parse(selectedDatastream) as OptionValue;
+      const urlWithParams = buildUrlWithParams(url, { '$count': true, '$top': 500, '$filter': `year(phenomenonTime) eq 2023` });
+      setObservationsUrl(urlWithParams);
+    }
+  }, [selectedDatastream]);
 
   useEffect(() => {
     if (isFetching) {
       setObservationsLoading(true);
     }
 
-    if (!isPending && !isError) {
+    if (!isPending && !isError && !isFetching) {
       setObservationsCount(data['@iot.count'] || 0);
       setObservationsData(data.value);
       setObservationsLoading(false);
     }
-  }, [data, isPending, isError, isFetching, setObservationsData, setObservationsCount, setObservationsLoading]);
+  }, [data, isPending, isFetching, isError, setObservationsData, setObservationsCount, setObservationsLoading]);
 
   return (
     <div className="selector-container">
       <label className="label p-0">...then select a Datastream</label>
       <select
         className="selector"
-        value={selectedDatastreamUrl}
+        value={selectedDatastream}
         onChange={(e) => setSelectedDatastreamUrl(e.target.value)}
         disabled={!selectedFeature}
       >
         <option value="">Select a datastream...</option>
         {
           datastreams[selectedFeature] && datastreams[selectedFeature].map((datastream) => {
+            const optionData = { id: datastream['@iot.id'], url: datastream['Observations@iot.navigationLink'] };
+            const optionValue = JSON.stringify(optionData);
+
             return (
-              <option key={datastream['@iot.id']} value={datastream['Observations@iot.navigationLink']}>
+              <option
+                key={datastream['@iot.id']}
+                value={optionValue}
+              >
                 {datastream.description}
               </option>
             );

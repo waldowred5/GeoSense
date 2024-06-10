@@ -104,7 +104,11 @@ export const Dashboard = () => {
             setObservationsCount={setObservationsCount}
             setObservationsLoading={setObservationsLoading}
           />
-          <StatsBar observationsData={observationsData} observationsCount={observationsCount}/>
+          <StatsBar
+            observationsData={observationsData}
+            observationsCount={observationsCount}
+            observationsLoading={observationsLoading}
+          />
           <div className="h-full p-4">
             <Observations
               isLoading={observationsLoading}

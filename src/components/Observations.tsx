@@ -80,8 +80,9 @@ export const Observations = ({ observationsData, isLoading, chartTheme }: IObser
     <div className="h-[95%] w-full relative flex items-center justify-center">
       {
         isLoading
-          ? <span className="loading loading-ring loading-lg"></span>
-          : <Line
+          ? <span className="loading loading-ring loading-lg"></span> :
+          observationsData.length === 0 ? <h3>No data available</h3> :
+          <Line
             data={chartData}
             options={{
               maintainAspectRatio: false,
