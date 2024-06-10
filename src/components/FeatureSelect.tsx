@@ -1,41 +1,45 @@
-import { useFeature } from "../store/useFeature.ts";
-import { Select } from "./Select.tsx";
-
-type Feature = {
-  '@iot.id': number;
-  '@iot.selfLink': string;
-  'Observations@iot.navigationLink': string;
-  description: string;
-  encodingType: string;
-  feature: string;
-  name: string;
-  properties: {
-    publish_yn: string;
-    sen_id: string;
-    type: string;
-  };
-}
+// import { useFeature } from "../store/useFeature.ts";
+import { Feature } from "../types.ts";
 
 interface IFeatureSelectProps {
   features: Feature[];
-  loading: boolean;
-  error: any; // TODO: Type error
+  disabled: boolean;
+  selectedFeature: string;
+  setSelectedFeature: (feature: string) => void;
 }
 
-// Future Improvement: Sort features alphabetically and/or add filtering
-export const FeatureSelect = ({ features, loading, error }: IFeatureSelectProps) => {
-  const { selectedFeature, updateSelectedFeature } = useFeature();
+export const FeatureSelect = ({ features, disabled, selectedFeature, setSelectedFeature }: IFeatureSelectProps) => {
+  // const {
+  //   selectedFeatureObservationsLink,
+  //   updateSelectedFeature
+  // } = useFeature((state) => {
+  //   return {
+  //     selectedFeatureObservationsLink: state.selectedFeatureObservationsLink,
+  //     updateSelectedFeature: state.updateSelectedFeature,
+  //   };
+  // });
 
   return (
-    <Select value={selectedFeature} updateValue={updateSelectedFeature} label={'First, select a Feature...'}>
-      <option value="">Select a feature...</option>
-      {
-        features && features.map((feature: any) => (
-          <option key={feature["@iot.id"]} value={feature["@iot.id"]}>
-            {feature.name}
-          </option>
-        ))
-      }
-    </Select>
-  )
-}
+    <div className="selector-container">
+      <label className="label p-0">First, select a Feature...</label>
+      <select
+        className="selector"
+        value={selectedFeature}
+        onChange={(e) => {
+          setSelectedFeature(e.target.value);
+        }}
+        disabled={disabled || features.length === 0}
+      >
+        <option value="">{`Select a feature...`}</option>
+        {
+          features && features.map((feature: Feature) => {
+            return (
+              <option key={feature['@iot.id']} value={feature['@iot.id']}>
+                {`${feature.name} - ${feature['@iot.id']}`}
+              </option>
+            );})
+        }
+      </select>
+    </div>
+  );
+};

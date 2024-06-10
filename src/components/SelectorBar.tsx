@@ -1,26 +1,35 @@
 import { FeatureSelect } from "./FeatureSelect.tsx";
-import { SensorSelect, sensorSelectLabel } from "./SensorSelect.tsx";
-import { useGetFeatures } from "../hooks/useFetch.ts";
-import { useFeature } from "../store/useFeature.ts";
-import { Select } from "./Select.tsx";
+import { SensorSelect } from "./SensorSelect.tsx";
+import { FaChevronRight } from "react-icons/fa6";
+import { DatastreamsByFeature, Feature, Observation } from "../types.ts";
+import { useState } from "react";
 
-export const SelectorBar = () => {
-  const {
-    data: features,
-    loading: featuresLoading,
-    error: featuresError
-  } = useGetFeatures();
+interface ISelectorBarProps {
+  features: Feature[];
+  isFeatureListLoading: boolean;
+  datastreams: DatastreamsByFeature;
+  setObservationsData: (data: Observation[]) => void;
+}
 
-  const { selectedFeature } = useFeature();
+export const SelectorBar = ({ features, isFeatureListLoading, datastreams, setObservationsData }: ISelectorBarProps) => {
+  const [selectedFeature, setSelectedFeature] = useState<string>('');
 
   return (
-    <div className="flex w-full p-4 border-b-4 border-accent rounded-t-box gap-[10vw]">
-      <FeatureSelect features={features} loading={featuresLoading} error={featuresError}/>
-      {
-        selectedFeature
-          ? <SensorSelect />
-          : <Select value={''} updateValue={() => {}} label={sensorSelectLabel} disabled></Select>
-      }
+    <div className="flex w-full items-center p-4 border-b-4 border-accent rounded-t-box gap-8">
+      <FeatureSelect
+        features={features}
+        disabled={isFeatureListLoading}
+        selectedFeature={selectedFeature}
+        setSelectedFeature={setSelectedFeature}
+      />
+      <div className="text-4xl pt-[32px]">
+        <FaChevronRight/>
+      </div>
+      <SensorSelect
+        datastreams={datastreams}
+        selectedFeature={selectedFeature}
+        setObservationsData={setObservationsData}
+      />
     </div>
-  )
-}
+  );
+};

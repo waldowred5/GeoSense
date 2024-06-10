@@ -21,5 +21,6 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'object-curly-spacing': ['error', 'always'],
+    'semi': ['error', 'always'],
   },
 }

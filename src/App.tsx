@@ -1,21 +1,20 @@
-import { useEffect } from 'react'
-import { themeChange } from 'theme-change'
-import { Header } from "./components/Header.tsx";
-import { SelectorBar } from "./components/SelectorBar.tsx";
+import { useEffect } from 'react';
+import { themeChange } from 'theme-change';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Dashboard } from "./components/Dashboard.tsx";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    themeChange(false)
-  }, [])
+    themeChange(false);
+  }, []);
 
   return (
-    <div className="flex items-center flex-col gap-3 w-[100vw] h-[100vh]">
-      <Header />
-      <div className="flex w-[96%] h-[94%] mb-8 card shadow-xl border rounded-box bg-base-300">
-        <SelectorBar />
-      </div>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <Dashboard />
+    </QueryClientProvider>
   );
-}
+};
 
-export default App
+export default App;
