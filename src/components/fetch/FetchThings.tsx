@@ -8,10 +8,6 @@ interface IFetchThingsProps {
 }
 
 export const FetchThings = ({ setData }: IFetchThingsProps) => {
-  useEffect(() => {
-    console.log('Fetching Things...');
-  }, []);
-
   const thingsUrl = buildUrlWithParams(`${BASE_URL}/Things`, { '$expand': "Datastreams" });
   const {
     isPending,

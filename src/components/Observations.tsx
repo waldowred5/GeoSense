@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartData
+  ChartData,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from "react";
@@ -26,9 +26,10 @@ ChartJS.register(
 interface IObservationsProps {
   isLoading: boolean;
   observationsData: Observation[];
+  chartTheme: 'light' | 'synthwave';
 }
 
-export const Observations = ({ observationsData, isLoading }: IObservationsProps) => {
+export const Observations = ({ observationsData, isLoading, chartTheme }: IObservationsProps) => {
   const [chartData, setChartData] = useState<ChartData<'line'>>({ datasets: [] });
 
   useEffect(() => {
@@ -45,7 +46,6 @@ export const Observations = ({ observationsData, isLoading }: IObservationsProps
       });
 
       const labels = sortedData.map((data) => {
-        // return data.x after trimming last 8 characters
         return data.x;
       });
 
@@ -53,11 +53,28 @@ export const Observations = ({ observationsData, isLoading }: IObservationsProps
         labels,
         datasets: [{
           data: sortedData,
-          borderWidth: 1
+          borderWidth: 1,
+          fill: false,
+          pointStyle: 'circle',
+          pointRadius: 1,
+          borderColor: chartTheme === 'light' ? '#FF00D3' : '#828CF8',
+          pointBackgroundColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+          pointBorderColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
         }]
       });
     }
   }, [observationsData]);
+
+  useEffect(() => {
+    setChartData({
+      ...chartData,
+      datasets: chartData.datasets.map((dataset) => ({
+        ...dataset,
+        borderColor: chartTheme === 'light' ? '#FF00D3' : '#828CF8',
+        pointBackgroundColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+        pointBorderColor: chartTheme === 'light' ? '#683FFF' : '#319ACC',
+    })) });
+  }, [chartTheme]);
 
   return (
     <div className="h-[95%] w-full relative flex items-center justify-center">
@@ -68,7 +85,19 @@ export const Observations = ({ observationsData, isLoading }: IObservationsProps
             data={chartData}
             options={{
               maintainAspectRatio: false,
-              scales: { y: { beginAtZero: false } },
+              scales: {
+                x: {
+                  grid: {
+                    color: chartTheme === 'light' ? '#6A6A6A' : '#5C5D5E'
+                  },
+                },
+                y: {
+                  beginAtZero: false,
+                  grid: {
+                    color: chartTheme === 'light' ? '#6A6A6A' : '#5C5D5E'
+                  },
+                }
+              },
               plugins: {
                 title: { display: false },
                 legend: { display: false },
