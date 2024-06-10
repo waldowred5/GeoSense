@@ -4,21 +4,31 @@ import { useEffect, useState } from "react";
 interface IStatsBarProps {
   observationsData: Observation[];
   observationsCount: number;
+  observationsLoading: boolean;
 }
 
-export const StatsBar = ({ observationsData, observationsCount }: IStatsBarProps) => {
-  const [dataPointsCount, setDataPointsCount] = useState<number>(0);
-  const [minValue, setMinValue] = useState<number>(0);
-  const [maxValue, setMaxValue] = useState<number>(0);
-  const [meanValue, setMeanValue] = useState<number>(0);
+export const StatsBar = ({ observationsData, observationsCount, observationsLoading }: IStatsBarProps) => {
+  const [dataPointsCount, setDataPointsCount] = useState<string>('--');
+  const [minValue, setMinValue] = useState<string>('--');
+  const [maxValue, setMaxValue] = useState<string>('--');
+  const [meanValue, setMeanValue] = useState<string>('--');
+
+  useEffect(() => {
+    if (observationsLoading) {
+      setDataPointsCount('--');
+      setMinValue('--');
+      setMaxValue('--');
+      setMeanValue('--');
+    }
+  }, [observationsLoading]);
 
   useEffect(() => {
     if (observationsData.length > 0) {
-      setDataPointsCount(observationsCount);
+      setDataPointsCount(observationsCount.toString());
 
       const minVal = Math.min(...observationsData.map(observation => observation.result));
-      setMinValue(minVal);
-      setMaxValue(Math.max(...observationsData.map(observation => observation.result)));
+      setMinValue(minVal.toString());
+      setMaxValue(Math.max(...observationsData.map(observation => observation.result)).toString());
 
       const decimalIndex = minVal.toString().indexOf('.');
       const normalisedDecimalPlaces = decimalIndex === -1 ? 0 : decimalIndex;
@@ -28,9 +38,9 @@ export const StatsBar = ({ observationsData, observationsCount }: IStatsBarProps
       }, 0) / observationsData.length;
       const trimmedMeanValue = Number(meanValue.toFixed(decimalPlaces));
 
-      setMeanValue(trimmedMeanValue);
+      setMeanValue(trimmedMeanValue.toString());
     }
-  }, [observationsData]);
+  }, [observationsData, observationsCount]);
 
   return (
     <div className="flex justify-around border-b-4 border-accent p-4">
