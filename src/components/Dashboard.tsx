@@ -88,17 +88,6 @@ export const Dashboard = () => {
     }
   }, [datastreamsByFeature, features]);
 
-  useEffect(() => {
-    console.log('things', things);
-    console.log('filteredFeatures', filteredFeatures);
-    console.log('datastreams', datastreams);
-    console.log('datastreamsByFeature', datastreamsByFeature);
-  }, [datastreamsByFeature, things, filteredFeatures, datastreams]);
-
-  useEffect(() => {
-    console.log('observationsData', observationsData);
-  }, [observationsLoading]);
-
   return (
     <>
       <FetchThings setData={setThings}/>
