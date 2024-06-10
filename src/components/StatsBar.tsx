@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 
 interface IStatsBarProps {
   observationsData: Observation[];
+  observationsCount: number;
 }
 
-export const StatsBar = ({ observationsData }: IStatsBarProps) => {
+export const StatsBar = ({ observationsData, observationsCount }: IStatsBarProps) => {
   const [dataPointsCount, setDataPointsCount] = useState<number>(0);
   const [minValue, setMinValue] = useState<number>(0);
   const [maxValue, setMaxValue] = useState<number>(0);
@@ -13,7 +14,7 @@ export const StatsBar = ({ observationsData }: IStatsBarProps) => {
 
   useEffect(() => {
     if (observationsData.length > 0) {
-      setDataPointsCount(observationsData.length);
+      setDataPointsCount(observationsCount);
 
       const minVal = Math.min(...observationsData.map(observation => observation.result));
       setMinValue(minVal);
@@ -30,18 +31,6 @@ export const StatsBar = ({ observationsData }: IStatsBarProps) => {
       setMeanValue(trimmedMeanValue);
     }
   }, [observationsData]);
-
-  // useEffect(() => {
-  //   const decimalIndex = minValue.toString().indexOf('.');
-  //   const normalisedDecimalPlaces = decimalIndex === -1 ? 0 : decimalIndex;
-  //   const decimalPlaces = minValue.toString().length - normalisedDecimalPlaces - 1;
-  //   const meanValue = observationsData.reduce((acc, observation) => {
-  //     return acc + observation.result;
-  //   }, 0) / observationsData.length;
-  //   const trimmedMeanValue = Number(meanValue.toFixed(decimalPlaces));
-  //
-  //   setMeanValue(trimmedMeanValue);
-  // }, [minValue, observationsData]);
 
   return (
     <div className="flex justify-around border-b-4 border-accent p-4">

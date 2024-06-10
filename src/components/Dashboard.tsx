@@ -16,6 +16,8 @@ export const Dashboard = () => {
   const [filteredFeatures, setFilteredFeatures] = useState<Feature[]>([]);
   const [isFeatureListLoading, setIsFeatureListLoading] = useState(true);
   const [observationsData, setObservationsData] = useState<Observation[]>([]);
+  const [observationsCount, setObservationsCount] = useState<number>(0);
+  const [observationsLoading, setObservationsLoading] = useState(false);
 
   useEffect(() => {
     if (things.length > 0 && features.length > 0 && datastreams.length > 0) {
@@ -69,13 +71,13 @@ export const Dashboard = () => {
 
   useEffect(() => {
     console.log('observationsData', observationsData);
-  }, [observationsData]);
+  }, [observationsLoading]);
 
   return (
     <>
-      <FetchThings setData={setThings} />
-      <FetchFeatures setData={setFeatures} />
-      <FetchDatastreams setData={setDatastreams} />
+      <FetchThings setData={setThings}/>
+      <FetchFeatures setData={setFeatures}/>
+      <FetchDatastreams setData={setDatastreams}/>
       <div className="flex items-center flex-col gap-3 w-[100vw] h-[100vh]">
         <Header/>
         <div className="flex w-[96%] h-[94%] mb-8 card shadow-xl border rounded-box bg-base-300">
@@ -84,9 +86,16 @@ export const Dashboard = () => {
             isFeatureListLoading={isFeatureListLoading}
             datastreams={datastreamsByFeature}
             setObservationsData={setObservationsData}
+            setObservationsCount={setObservationsCount}
+            setObservationsLoading={setObservationsLoading}
           />
-          <StatsBar observationsData={observationsData} />
-          <Observations observationsData={observationsData} />
+          <StatsBar observationsData={observationsData} observationsCount={observationsCount} />
+          <div className="h-full p-4">
+            <Observations
+              isLoading={observationsLoading}
+              observationsData={observationsData}
+            />
+          </div>
         </div>
       </div>
     </>

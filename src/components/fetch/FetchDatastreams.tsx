@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Datastream, EntityData } from "../../types.ts";
 import { BASE_URL, buildUrlWithParams } from "../../api/utils.ts";
 import { useQueries, useQuery } from "@tanstack/react-query";

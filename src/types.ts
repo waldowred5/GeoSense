@@ -1,4 +1,5 @@
 export type EntityData<T> = {
+  '@iot.count'?: number;
   value: T[];
 };
 
