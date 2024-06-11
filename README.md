@@ -6,8 +6,8 @@ Important Links:
 - Github Repository: [Github](https://github.com/waldowred5/GeoSense)
 
 ### Getting Started:
-- yarn install (this project uses yarn v4)
-- yarn run dev (to start the development server)
+- `yarn install` (this project uses yarn v4)
+- `yarn run dev` (to start the development server)
 
 ### Challenges:
 - The total number of data points available for consumption is over 7 million so to avoid being rate limited or causing long wait times careful consideration must be given to how the data is fetched and displayed
