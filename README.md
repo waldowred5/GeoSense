@@ -5,6 +5,10 @@ Important Links:
 - Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
 - Github Repository: [Github](https://github.com/waldowred5/GeoSense)
 
+### Getting Started:
+- yarn install (this project uses yarn v4)
+- yarn run dev (to start the development server)
+
 ### Challenges:
 - The total number of data points available for consumption is over 7 million so to avoid being rate limited or causing long wait times careful consideration must be given to how the data is fetched and displayed
 - The optimal relationships to fetch all features of interest and then all the related datastreams from the BGS API are not directly available so some data manipulation is required
