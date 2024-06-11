@@ -4,6 +4,12 @@ import { cleanup } from '@testing-library/react';
 import 'vitest-canvas-mock';
 import { QueryClient } from "@tanstack/react-query";
 
+globalThis.fetch = vi.fn();
+
+beforeEach(() => {
+  globalThis.fetch.mockClear();
+});
+
 afterEach(() => {
   cleanup();
 });
