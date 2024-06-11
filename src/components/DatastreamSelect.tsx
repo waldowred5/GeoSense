@@ -29,6 +29,7 @@ export const DatastreamSelect = (
   const {
     isPending,
     isError,
+    isFetching,
     isStale,
     data,
   } = useQuery<EntityData<Observation>>({
@@ -58,7 +59,7 @@ export const DatastreamSelect = (
       setObservationsLoading(true);
     }
 
-    if (!isPending && !isError) {
+    if (!isPending && !isError && !isFetching) {
       setObservationsCount(data['@iot.count'] || 0);
       setObservationsData(data.value);
       setObservationsLoading(false);
