@@ -46,24 +46,18 @@ export const DatastreamSelect = (
   }, [selectedDatastream]);
 
   useEffect(() => {
-    if (selectedDatastream) {
-      const { url } = JSON.parse(selectedDatastream) as OptionValue;
-      const urlWithParams = buildUrlWithParams(url, { '$count': true, '$top': 500, '$filter': `year(phenomenonTime) eq 2023` });
-      setObservationsUrl(urlWithParams);
-    }
-  }, [selectedDatastream]);
-
-  useEffect(() => {
     if (isStale && isPending) {
       setObservationsLoading(true);
     }
+  }, [isPending, isStale, setObservationsLoading]);
 
-    if (!isPending && !isError) {
+  useEffect(() => {
+    if (!isPending && !isError && !isFetching) {
       setObservationsCount(data['@iot.count'] || 0);
       setObservationsData(data.value);
       setObservationsLoading(false);
     }
-  }, [data, isPending, isStale, isError, setObservationsData, setObservationsCount, setObservationsLoading]);
+  }, [data, isPending, isFetching, isError, setObservationsData, setObservationsCount, setObservationsLoading]);
 
   return (
     <div className="selector-container">
