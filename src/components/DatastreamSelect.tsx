@@ -29,7 +29,7 @@ export const DatastreamSelect = (
   const {
     isPending,
     isError,
-    isFetching,
+    isStale,
     data,
   } = useQuery<EntityData<Observation>>({
     queryKey: [`observations:${datastreamId}`, datastreamUrl],
@@ -54,16 +54,16 @@ export const DatastreamSelect = (
   }, [selectedDatastream]);
 
   useEffect(() => {
-    if (isFetching) {
+    if (isStale && isPending) {
       setObservationsLoading(true);
     }
 
-    if (!isPending && !isError && !isFetching) {
+    if (!isPending && !isError) {
       setObservationsCount(data['@iot.count'] || 0);
       setObservationsData(data.value);
       setObservationsLoading(false);
     }
-  }, [data, isPending, isFetching, isError, setObservationsData, setObservationsCount, setObservationsLoading]);
+  }, [data, isPending, isStale, isError, setObservationsData, setObservationsCount, setObservationsLoading]);
 
   return (
     <div className="selector-container">

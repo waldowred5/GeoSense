@@ -24,7 +24,6 @@ export const StatsBar = ({ observationsData, observationsCount, observationsLoad
 
   useEffect(() => {
     if (observationsData.length > 0) {
-      console.log(observationsData);
       setDataPointsCount(observationsCount.toString());
 
       const minVal = Math.min(...observationsData.map(observation => observation.result));
