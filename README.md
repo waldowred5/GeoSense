@@ -1,5 +1,7 @@
 # GeoSense
-A simple web app for exploring British Geological Survey (BGS) geoscientific IoT data
+A simple web app for exploring British Geological Survey (BGS) geoscientific IoT data.
+
+Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
 
 ### Challenges:
 - The total number of data points available for consumption is over 7 million so to avoid being rate limited or causing long wait times careful consideration must be given to how the data is fetched and displayed
@@ -19,11 +21,14 @@ A simple web app for exploring British Geological Survey (BGS) geoscientific IoT
 - Caching of API data to reduce load times (thanks React Query!)
 
 ### Future Improvements:
-- Increase test coverage to 80% or more
-- Add error handling for failed API requests and edge cases
+- Increase test coverage to cover more than 80% of code branches
+- Add more robust error handling for failed API requests and edge cases
 - Allow users to select a particular time period (year / month) for the observations they wish to see (would aid in reducing the number of observations fetched)
 - Optimise data fetching by only selecting required fields in query to reduce API data egress and load times
+- Add state management to avoid prop drilling and remove messy useState hooks from Dashboard
 - Add Google Maps API for location display ([3d Maps](https://developers.google.com/maps/documentation/javascript/3d-maps-getting-started?hl=en))
+- Find a way for chart styles to react to theme changes like all other components (current implementation is flaky and convoluted)
+- Dynamically apply datastream title to chart title
 
 ### API Structure:
 A visual representation of the relationships between the main entities in the BGS API:

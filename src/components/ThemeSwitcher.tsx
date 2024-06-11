@@ -12,6 +12,7 @@ export const ThemeSwitcher = ({ setChartTheme }: IThemeSwitcherProps) => {
         className="btn btn-ghost text-2xl"
         data-set-theme="synthwave"
         data-act-class="ACTIVECLASS"
+        data-testid="dark-theme-button"
         onClick={() => setChartTheme('synthwave')}
       >
         <LuMoonStar  />
@@ -21,6 +22,7 @@ export const ThemeSwitcher = ({ setChartTheme }: IThemeSwitcherProps) => {
         className="btn btn-ghost text-2xl"
         data-set-theme="light"
         data-act-class="ACTIVECLASS"
+        data-testid="light-theme-button"
         onClick={() => setChartTheme('light')}
       >
         <FiSun />
