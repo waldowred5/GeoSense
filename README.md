@@ -1,7 +1,9 @@
 # GeoSense
 A simple web app for exploring British Geological Survey (BGS) geoscientific IoT data.
 
-Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
+Important Links:
+- Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
+- Github Repository: [Github](https://github.com/waldowred5/GeoSense)
 
 ### Challenges:
 - The total number of data points available for consumption is over 7 million so to avoid being rate limited or causing long wait times careful consideration must be given to how the data is fetched and displayed
