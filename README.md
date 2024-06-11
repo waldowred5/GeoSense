@@ -8,7 +8,6 @@ Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
 - The optimal relationships to fetch all features of interest and then all the related datastreams from the BGS API are not directly available so some data manipulation is required
 
 ### Known Issues:
-- When selecting some datastreams, 2 result sets are returned instead of 1. This may be to do with caching issues but requires further investigation...
 - When requesting more than 672 records the API limits the response to 672 records. As dates are not guaranteed to be returned in order from the API some entries may be accidentally excluded. This can be improved by fetching data in smaller chunks and sorting the results before displaying them. See suggested improvements below
 
 ### Features:
@@ -23,7 +22,7 @@ Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
 
 ### Future Improvements:
 - Increase test coverage to cover more than 80% of code branches
-- Add more error handling for failed API requests
+- Add more robust error handling for failed API requests and edge cases
 - Allow users to select a particular time period (year / month) for the observations they wish to see (would aid in reducing the number of observations fetched)
 - Optimise data fetching by only selecting required fields in query to reduce API data egress and load times
 - Add state management to avoid prop drilling and remove messy useState hooks from Dashboard
