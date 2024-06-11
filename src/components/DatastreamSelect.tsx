@@ -73,6 +73,7 @@ export const DatastreamSelect = (
         value={selectedDatastream}
         onChange={(e) => setSelectedDatastreamUrl(e.target.value)}
         disabled={!selectedFeature}
+        data-testid="datastream-select"
       >
         <option value="">Select a datastream...</option>
         {

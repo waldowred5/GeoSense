@@ -7,7 +7,7 @@ import { QueryClient } from "@tanstack/react-query";
 globalThis.fetch = vi.fn();
 
 beforeEach(() => {
-  globalThis.fetch.mockClear();
+  vi.clearAllMocks();
 });
 
 afterEach(() => {
@@ -18,7 +18,7 @@ export const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false, // Disable retries to avoid unnecessary delays in tests
+        retry: false,
       },
     },
   });

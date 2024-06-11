@@ -22,7 +22,7 @@ Live site available at: [GeoSense](https://geosense-bgs.netlify.app/)
 - Caching of API data to reduce load times (thanks React Query!)
 
 ### Future Improvements:
-- Increase test coverage to 80% or more
+- Increase test coverage to cover more than 80% of code branches
 - Add more error handling for failed API requests
 - Allow users to select a particular time period (year / month) for the observations they wish to see (would aid in reducing the number of observations fetched)
 - Optimise data fetching by only selecting required fields in query to reduce API data egress and load times

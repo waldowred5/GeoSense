@@ -1,3 +1,70 @@
+export const observationsRawDataResponseFixture = {
+  "@iot.count": 18432,
+  "@iot.nextLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Datastreams(1)/Observations?$top=500&$skip=500&$filter=%28year%28phenomenonTime%29+eq+2023%29&$count=true",
+  "value": [
+    {
+      "@iot.id": 211806310,
+      "phenomenonTime": "2023-03-28T10:30:00.000Z",
+      "parameters": {
+        "sen_id": 211806310,
+        "publish_yn": "Y"
+      },
+      "result": 1009.86,
+      "resultTime": "2023-03-28T10:30:00.000Z",
+      "resultQuality": {
+        "reason": "Data Verified (manual check)",
+        "status": "9",
+        "quality": "Good",
+        "event_id": 1040
+      },
+      "@iot.selfLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806310)",
+      "Datastream@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806310)/Datastream",
+      "FeatureOfInterest@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806310)/FeatureOfInterest",
+      "MultiDatastream@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806310)/MultiDatastream"
+    },
+    {
+      "@iot.id": 211806499,
+      "phenomenonTime": "2023-03-28T12:15:00.000Z",
+      "parameters": {
+        "sen_id": 211806499,
+        "publish_yn": "Y"
+      },
+      "result": 1008.17,
+      "resultTime": "2023-03-28T12:15:00.000Z",
+      "resultQuality": {
+        "reason": "Data Verified (manual check)",
+        "status": "9",
+        "quality": "Good",
+        "event_id": 1040
+      },
+      "@iot.selfLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806499)",
+      "Datastream@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806499)/Datastream",
+      "FeatureOfInterest@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806499)/FeatureOfInterest",
+      "MultiDatastream@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211806499)/MultiDatastream"
+    },
+    {
+      "@iot.id": 211807147,
+      "phenomenonTime": "2023-03-28T18:15:00.000Z",
+      "parameters": {
+        "sen_id": 211807147,
+        "publish_yn": "Y"
+      },
+      "result": 1005.7,
+      "resultTime": "2023-03-28T18:15:00.000Z",
+      "resultQuality": {
+        "reason": "Data Verified (manual check)",
+        "status": "9",
+        "quality": "Good",
+        "event_id": 1040
+      },
+      "@iot.selfLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211807147)",
+      "Datastream@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211807147)/Datastream",
+      "FeatureOfInterest@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211807147)/FeatureOfInterest",
+      "MultiDatastream@iot.navigationLink": "https://sensors.bgs.ac.uk/FROST-Server/v1.1/Observations(211807147)/MultiDatastream"
+    },
+  ]
+};
+
 export const observationsDataFixtureMinimalExample1 = [
   {
     "@iot.id": 211806488,
