@@ -18,7 +18,7 @@ Important Links:
 
 ### Features:
 - Display a list of features of interest (filtered to exclude most features without datastreams)
-- Display a list of datastreams for a selected featureF of interest
+- Display a list of datastreams for a selected feature of interest
 - Display the min, max, mean and number of observations for a selected datastream
 - Display a graph of the observations for a selected datastream over time
 - Dark mode / theme switcher (I couldn't help myself 😅)
